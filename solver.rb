@@ -34,6 +34,8 @@ def solve node, recorded, maze
 
     # this should select the node from those connected that has been tried the
     # lowest number of times
+    # this is conveniant because it automatically makes the node we just
+    # came from a lower priority than future nodes
     nxt = lowest(node[2..-1], maze)
 
     solve(maze[nxt], recorded, maze)
@@ -58,8 +60,9 @@ def analyse node, maze
 
   if node.length == 3
     kull(maze, node[0])
+
   else
-    node[1] = mark(node[1])
+    mark(node)
   end
 
 end
@@ -77,8 +80,8 @@ end
 
 # simply adds 1 to the current value (count of times visited), or, if the node
 # has never been visited, it turns the X into a 1s
-def mark value
-    value += 1
+def mark node
+    node[1] += 1
 end
 
 #------------------END OF ANALYSE SUB-FUNCTIONS-----------------------------#
@@ -90,8 +93,6 @@ end
 
 def lowest(array, maze)
 
-  p array
-
   #if there is only one array entry, the pairent node is a dead end and there
   #is no need to compare anything
   return array[0] if array.length == 1
@@ -101,13 +102,15 @@ def lowest(array, maze)
     [maze[node][1], node]
   end
 
-  p array
-
   # then we sort that array (so the lowest valued node is at the start) and
   # return the name from the first entry
 
   array.sort_by{|x, y| x}[0][1]
 
 end
+
+#------------------END OF LOWEST SUB-FUNCTIONS-----------------------------#
+
+
 
 p wrapper(EXAMPLE_HASH)
