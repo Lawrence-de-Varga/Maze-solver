@@ -1,0 +1,27 @@
+# Abstract maze-desc to be read in by the solver
+# This does not contain directional info because as far as I know 
+# the solver does not need it. Directional info is limited to u(up),d(down),l(left),r(right)...
+
+# Current Format:
+# Node_num[connected_node1, connected_node2, connected_node3...]
+
+# A connections array containing a 0 is an exit(or entry either way).
+
+# Below is an example map desc
+1[0,2],2[1,3],3[2,4],4[3,5,7],5[4,6,11],6[5],7[4,8,15],8[7,9],9[8,10],10[9],11[5,12],12[11,13],13[12,14],14[0,13],15[7,16,17],16[15],17[15,18,19],18[17],19[17,20],20[19]
+
+# This above map-desc is taken from a simple map that looks something like this:
+
+          1  
+ --------  -----
+ |3       2| 10 |
+ |  -------     |
+ |  |8       9  |
+ |  |  ---------|
+ |4  7    15  16|
+ | -------|  |--|
+ |5     11|17 19|
+ | -----  |  |  |
+ |6|13  12|18|20|
+ ---  -----------
+    14  
