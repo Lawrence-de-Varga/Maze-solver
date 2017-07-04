@@ -3,24 +3,33 @@
 #This will also take a starting position and and exit.
 #it will map the nodes traversed to reach the exit, and return them in an array
 
-EXAMPLE_HASH = { one: [:one, 0, :two, :three], two:[:two, 0, :one, :five],
-  three:[:three, 0, :one, :seven], four: [:four, 0, :seven, :nine],
-   five: [:five, 0, :two, :eight], six: [:six, 0, :seven],
-   seven:[:seven, 0, :three, :four, :six], eight:[:eight, 0, :five, :nine],
-   nine:[:nine, -10, :eight, :four]}
+def generate_start maze
 
+  rand_start = maze.keys.sample
 
-def wrapper maze
-  solve(maze[:one], [], maze)
 end
+
+def solver maze, start
+
+  #we'll be marking maze tiles as we go so we want to avoid doing this
+  #permemently
+  saftey_maze = maze.dup
+
+
+  solve(saftey_maze[start], [], maze)
+end
+
 
 #------------------START OF MAIN SOLVER FUNCTION-----------------------------#
 
 #TAKES: hash representing maze
-#RETURNS: array representing nodes passed to reach exit in order
+#RETURNS: the key of the exit
 def solve node, recorded, maze
 
   recorded << node[0]
+
+
+  #we need to work out if exit is even possible
 
   if node[1] < 0
 
@@ -28,9 +37,12 @@ def solve node, recorded, maze
     # values to find keys because there could be multiple versions of the
     # same value
 
-    recorded
+    return node[0]
   else
-    analyse(node, maze)
+
+    #point out the fact we just visited a node (nodes connected to dead ends
+    #will automatically get visited lots, so that's good)
+    node[1] += 1
 
     # this should select the node from those connected that has been tried the
     # lowest number of times
@@ -47,42 +59,7 @@ end
 
 #------------------START OF ANALYSE SUB-FUNCTIONS-----------------------------#
 
-#we want to be able to record how many times we have visited each node
-#we also want to record which nodes are dead ends
-
-
-# TAKES: maze hash, and current node
-# RETURNS: it modifies the node and/or the maze
-#This checks if the node is a dead end, we remove that node as a connection from
-#its connected nodes in hash
-#otherwise, we mark how many times it has been visited
-def analyse node, maze
-
-  if node.length == 3
-    kull(maze, node[0])
-
-  else
-    mark(node)
-  end
-
-end
-
-#removes all instances of node (the name of a node) from maze values
-def kull maze, node_name
-
-  maze.each do |k, v|
-    if v.include?(node_name)
-      v.delete(node_name)
-    end
-  end
-
-end
-
-# simply adds 1 to the current value (count of times visited), or, if the node
-# has never been visited, it turns the X into a 1s
-def mark node
-    node[1] += 1
-end
+#turns out these actually only came down to a single line of code...
 
 #------------------END OF ANALYSE SUB-FUNCTIONS-----------------------------#
 
@@ -104,13 +81,9 @@ def lowest(array, maze)
 
   # then we sort that array (so the lowest valued node is at the start) and
   # return the name from the first entry
-
+  p array
   array.sort_by{|x, y| x}[0][1]
 
 end
 
 #------------------END OF LOWEST SUB-FUNCTIONS-----------------------------#
-
-
-
-p wrapper(EXAMPLE_HASH)
