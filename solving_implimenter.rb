@@ -1,3 +1,9 @@
+# --------------------- TO              DO -------------------------------#
+
+# (1) make the assigning of start and end values less rickety and shit
+
+# --------------------- TO              DO -------------------------------#
+
 require "./converter.rb"
 require "./solver.rb"
 require "./numberer.rb"
@@ -19,5 +25,3 @@ num_wrapper maze, start, maze[ext]
 path = start_tour maze, start, ext
 
 p path
-
-maze.each {|k, v| print "#{[k, v]} \n"}
