@@ -1,5 +1,5 @@
 # Abstract maze-desc to be read in by the solver
-# This does not contain directional info because as far as I know 
+# This does not contain directional info because as far as I know
 # the solver does not need it. Directional info is limited to u(up),d(down),l(left),r(right)...
 
 # Current Format:
@@ -12,16 +12,16 @@
 
 # This above map-desc is taken from a simple map that looks something like this:
 
-          1  
- --------  -----
- |3       2| 10 |
- |  -------     |
- |  |8       9  |
- |  |  ---------|
- |4  7    15  16|
- | -------|  |--|
- |5     11|17 19|
- | -----  |  |  |
- |6|13  12|18|20|
- ---  -----------
-    14  
+#          1  
+# --------  -----
+# |3       2| 10 |
+# |  -------     |
+# |  |8       9  |
+# |  |  ---------|
+# |4  7    15  16|
+# | -------|  |--|
+# |5     11|17 19|
+# | -----  |  |  |
+# |6|13  12|18|20|
+# ---  -----------
+#    14
