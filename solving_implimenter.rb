@@ -11,15 +11,13 @@ require "./tourist.rb"
 
 maze =  converter "maze-desc.txt"
 
-start = generate_start maze
+start = 20
 
-p start
+p maze
 
 ext = solver maze, start
 
 p ext
-
-
 num_wrapper maze, start, maze[ext]
 
 path = start_tour maze, start, ext

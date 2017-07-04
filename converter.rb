@@ -62,7 +62,7 @@ def seperate str
     # solver alltogether
     # we don't need the extra 0 here because the first element of connections
     # (which is ordered) is already 0
-    prep = [node, -10] if connections.include?(0)
+    prep = [node, "EXIT"] if connections.include?(0)
 
     prep << connections
 
