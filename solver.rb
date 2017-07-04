@@ -29,10 +29,14 @@ def solve node, recorded, maze
 
   recorded << node[0]
 
+  if doomed? maze, recorded
+
+    return nil
+  end
 
   #we need to work out if exit is even possible
 
-  if node[1] < 0
+  if node[1] == "EXIT"
 
     return node[0]
   else
@@ -47,7 +51,8 @@ def solve node, recorded, maze
     # lowest number of times
     # this is conveniant because it automatically makes the node we just
     # came from a lower priority than future nodes
-    nxt = lowest(node[3..-1], maze)
+
+    nxt = solve_lowest(node[3..-1], maze)
 
     solve(maze[nxt], recorded, maze)
   end
@@ -56,33 +61,56 @@ end
 
 #------------------END OF MAIN SOLVER FUNCTION-----------------------------#
 
-#------------------START OF ANALYSE SUB-FUNCTIONS-----------------------------#
+#-------------------------START OF DOOMED-CHECK-----------------------------#
 
-#turns out these actually only came down to a single line of code...
+# We want to check if all the nodes connected to all the nodes we have visited
+# so far have been visited. If so, we have visited all possible nodes.
 
-#------------------END OF ANALYSE SUB-FUNCTIONS-----------------------------#
+def doomed? maze, visited
+
+  visited.each do |visited_node|
+
+    maze[visited_node][3..-1].each do |possible_node|
+
+      return false if !(visited.include?(possible_node))
+    end
+  end
+
+  true
+end
+
+#---------------------------END OF DOOMED-CHECK-----------------------------#
 
 #------------------START OF LOWEST SUB-FUNCTIONS-----------------------------#
 
 # TAKES: an array containing the keys to 1 or more nodes and the maze hash
 #RETURNS one of those names (the one least visited)
 
-def lowest(array, maze)
+def solve_lowest(arr, maze)
 
   #if there is only one array entry, the pairent node is a dead end and there
   #is no need to compare anything
-  return array[0] if array.length == 1
+
+  return arr[0] if arr.length == 1
 
   #we need to associate each name with the marked value of that node
-  array.map! do |node|
-    [maze[node][1], node]
+  arr.map! do |node|
+    value = maze[node][1]
+    return node if value == "EXIT"
+    [value, node]
   end
 
   # then we sort that array (so the lowest valued node is at the start) and
   # return the name from the first entry
-
-  array.sort_by{|x, y| x}[0][1]
+  arr.sort_by{|x, y| x}[0][1]
 
 end
 
 #------------------END OF LOWEST SUB-FUNCTIONS-----------------------------#
+
+a = {1=>[1, "EXIT", 0], 2=>[2, 0, 0, 3], 3=>[3, 0, 0, 2, 4],
+   4=>[4, 0, 0, 3, 5, 7], 5=>[5, 0, 0, 4, 6, 11],
+    6=>[6, 0, 0, 5], 7=>[7, 0, 0, 4, 8, 15],
+    8=>[8, 0, 0, 7, 9], 9=>[9, 0, 0, 8, 10], 10=>[10, 0, 0, 9], 11=>[11, 0, 0, 5, 12], 12=>[12, 0, 0, 11, 13], 13=>[13, 0, 0, 12, 14], 14=>[14, "EXIT", 0, 13], 15=>[15, 0, 0, 7, 16, 17], 16=>[16, 0, 0, 15], 17=>[17, 0, 0, 15, 18, 19], 18=>[18, 0, 0, 17], 19=>[19, 0, 0, 17, 20], 20=>[20, 0, 0, 19]}
+
+p solver a, 20
