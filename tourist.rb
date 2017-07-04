@@ -69,7 +69,7 @@ end
 #------------------END OF LOWEST SUB-FUNCTIONS-----------------------------#
 
 
-
+#we need this so that tourist knows when it has reached the exit
 def tour_reformat maze, ext
   ext[2] = "EXIT"
 end
