@@ -1,8 +1,17 @@
+# --------------------- TO              DO -------------------------------#
+
+# (1) find a way to exit all the children of the first numberer as soon as
+#     we find the exit
+
+# --------------------- TO              DO -------------------------------#
+
+
 =begin
 this guy starts at the exit and recursively numbers each tile depending on it's
 distance (in nodes) from the exit. When all nodes are numbered, we can
 find the quickest path simply by choosing the lowest possible node at every
 junction.
+
 
 this program should
 
@@ -22,40 +31,49 @@ That's all i think...
 =end
 
 
-EXAMPLE_HASH = { one: [:one, 0, :two, :three], two:[:two, "START", :one, :five],
-  three:[:three, 0, :one, :seven], four: [:four, 0, :seven, :nine],
-   five: [:five, 0, :two, :eight], six: [:six, "EXIT", :seven],
-   seven:[:seven, 0, :three, :four, :six], eight:[:eight, 0, :five, :nine],
-   nine:[:nine, 0, :eight, :four]}
-
 # each instance needs:
-# => current node_name
-# => number
-# => the maze
+# => current (EXIT) node_name
+# => number (distance from exit)
 # => the pervious node (for efficiency's sake)
-def numberer node, number, prev_node, maze
+# => the maze
+def numberer maze, node, number = 1, prev_node = nil
 
-  unless node[1] == 0
+
+  # we want all numberer calls to stop when one of them hits start, but for now
+  # we'll just return nil before we start comparing shit
+  if node[2] == "START"
+    return nil
+  end
+
+  if node[2] > 0
     return nil
 
   else
-    node[1] = number
+
+    node[2] = number
 
     number += 1
 
-    node[2..-1].each do |name|
+    node[3..-1].each do |name|
       unless name == prev_node
-        numberer(maze[name], number, node[0], maze)
+        numberer(maze, maze[name], number, node[0])
       end
+
     end
 
   end
 
 end
 
+# this just mutates maze so that the start and end are both labelled so that
+# numberer will understand them
+def reformat maze, start
+  maze[start][2] = "START"
+end
 
-numberer EXAMPLE_HASH[:seven], 1, "bob", EXAMPLE_HASH
+def num_wrapper maze, start, ext_node
+  p start
+  reformat maze, start
 
-puts "all numbered"
-
-p EXAMPLE_HASH
+  numberer maze, ext_node
+end

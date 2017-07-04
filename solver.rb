@@ -3,6 +3,12 @@
 #This will also take a starting position and and exit.
 #it will map the nodes traversed to reach the exit, and return them in an array
 
+# --------------------- TO              DO -------------------------------#
+
+# (1) make it so we can work out if there is no exit
+
+# --------------------- TO              DO -------------------------------#
+
 def generate_start maze
 
   rand_start = maze.keys.sample
@@ -11,12 +17,7 @@ end
 
 def solver maze, start
 
-  #we'll be marking maze tiles as we go so we want to avoid doing this
-  #permemently
-  saftey_maze = maze.dup
-
-
-  solve(saftey_maze[start], [], maze)
+  solve(maze[start], [], maze)
 end
 
 
@@ -33,22 +34,20 @@ def solve node, recorded, maze
 
   if node[1] < 0
 
-    # Fun Fact: the name of the current node has to be in node. We can;t use
-    # values to find keys because there could be multiple versions of the
-    # same value
-
     return node[0]
   else
 
     #point out the fact we just visited a node (nodes connected to dead ends
     #will automatically get visited lots, so that's good)
+    #NOTE: no need to worry about modifyng the maze, we have another spare
+    # 0 to be used with numberer and tourist
     node[1] += 1
 
     # this should select the node from those connected that has been tried the
     # lowest number of times
     # this is conveniant because it automatically makes the node we just
     # came from a lower priority than future nodes
-    nxt = lowest(node[2..-1], maze)
+    nxt = lowest(node[3..-1], maze)
 
     solve(maze[nxt], recorded, maze)
   end
@@ -81,7 +80,7 @@ def lowest(array, maze)
 
   # then we sort that array (so the lowest valued node is at the start) and
   # return the name from the first entry
-  p array
+
   array.sort_by{|x, y| x}[0][1]
 
 end

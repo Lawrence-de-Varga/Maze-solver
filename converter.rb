@@ -53,12 +53,16 @@ def seperate str
 
     node = marray[0].to_i
 
-    prep = [node, 0]
+    prep = [node, 0, 0]
 
     # we need to convert all the string numbers to ints
     connections = marray[1].split(",").map { |element| element.to_i }
 
-    prep = [node, "EXIT"] if connections.include?(0)
+    # NOTE: if we want we can totally just remember the key here and elminate
+    # solver alltogether
+    # we don't need the extra 0 here because the first element of connections
+    # (which is ordered) is already 0
+    prep = [node, -10] if connections.include?(0)
 
     prep << connections
 

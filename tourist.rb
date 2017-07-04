@@ -7,15 +7,11 @@ will be the fastest path for reaching the exit.
 
 =end
 
-EXAMPLE_HASH = { one: [:one, 0, :two, :three], two:[:two, 0, :one, :five],
-  three:[:three, 0, :one, :seven], four: [:four, 0, :seven, :nine],
-   five: [:five, 0, :two, :eight], six: [:six, 0, :seven],
-   seven:[:seven, 0, :three, :four, :six], eight:[:eight, 0, :five, :nine],
-   nine:[:nine, -10, :eight, :four]}
 
+def start_tour maze, start, ext
+  tour_reformat maze, maze[ext]
 
-def wrapper maze
-  tourist(maze[:one], [], maze)
+  tourist(maze[start], [], maze)
 end
 
 #------------------START OF MAIN SOLVER FUNCTION-----------------------------#
@@ -31,13 +27,13 @@ def tourist node, recorded, maze
 
   recorded << node[0]
 
-  if node[1] == "EXIT"
+  if node[2] == "EXIT"
 
 
     recorded
   else
 
-    nxt = lowest(node[2..-1], maze)
+    nxt = lowest(node[3..-1], maze)
 
     tourist(maze[nxt], recorded, maze)
   end
@@ -59,11 +55,12 @@ def lowest(array, maze)
 
   #we need to associate each name with the marked value of that node
   array.map! do |node|
-    [maze[node][1], node]
+    [maze[node][0], node]
   end
 
   # then we sort that array (so the lowest valued node is at the start) and
   # return the name from the first entry
+
 
   array.sort_by{|x, y| x}[0][1]
 
@@ -73,4 +70,6 @@ end
 
 
 
-p wrapper(EXAMPLE_HASH)
+def tour_reformat maze, ext
+  ext[2] = "EXIT"
+end
