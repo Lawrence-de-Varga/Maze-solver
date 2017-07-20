@@ -1,3 +1,6 @@
+require_relative "maze_to_str.rb"
+
+w = to_string maze_maker 20
 =begin
 This baby takes a filename as input.
 
@@ -46,6 +49,7 @@ end
 def seperate str
   hash = {}
 
+
   array = str.split(/[\]]\,*/) # I LOVE REGEEEEEEEEEEXXXXXX
 
   array.each do |str|
@@ -82,3 +86,12 @@ def converter filename
   hash = seperate maze
 
 end
+
+def basic_converter str
+  maze = isolate str
+
+  hash = seperate maze
+
+end
+
+p basic_converter w
