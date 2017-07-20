@@ -48,8 +48,6 @@ end
 
 def seperate str
   hash = {}
-
-
   array = str.split(/[\]]\,*/) # I LOVE REGEEEEEEEEEEXXXXXX
 
   array.each do |str|
@@ -67,6 +65,8 @@ def seperate str
     # we don't need the extra 0 here because the first element of connections
     # (which is ordered) is already 0
     prep = [node, "EXIT"] if connections.include?(0)
+
+    connections.delete(0)
 
     prep << connections
 
@@ -87,11 +87,11 @@ def converter filename
 
 end
 
-def basic_converter str
+def nonfile_converter str
   maze = isolate str
 
   hash = seperate maze
 
 end
 
-p basic_converter w
+p nonfile_converter w
