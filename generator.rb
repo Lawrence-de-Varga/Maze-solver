@@ -115,6 +115,18 @@ def make_branch connected_nodes_number, avalable_nodes
   nodes
 end
 
+def add_already_connected current_maze, node
+  already_connected = []
+
+  current_maze.each do |k, v|
+    already_connected << k if v.include?(node)
+  end
+
+  already_connected
+end
+
+
+
 # initilizes a new has with arrays as values, generates a bunch of nodes
 # (using gen_first_parth), and attaches a set number of nodes to each node
 def maze_maker number_of_nodes
@@ -123,7 +135,7 @@ def maze_maker number_of_nodes
   nodes = gen_first_path number_of_nodes
 
   nodes.each do |k, v|
-    return_maze[k] = make_branch(2, nodes)
+    return_maze[k] = make_branch(4, nodes)
   end
 
   end_marker return_maze
@@ -134,7 +146,10 @@ end
 def end_marker hash
   val = hash.keys.sample
 
-  hash[val] << :EXIT
+  hash[val] << 0
 end
 
-# p maze_maker 20
+z = maze_maker 20
+
+puts z 
+puts add_already_connected z, z.keys[0]
