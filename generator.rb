@@ -103,8 +103,10 @@ def make_branch connected_nodes_number, avalable_nodes
 
   num = rand(1..connected_nodes_number)
 
+  num = 0 unless num
+
   num.times do
-    node = gen_uniq_rand_hash(3, avalable_nodes)
+    node = gen_uniq_rand_hash(4, avalable_nodes)
     nodes << node
 
     # increiment the count of each avalable node so we can enforce a limit the
@@ -125,6 +127,18 @@ def add_already_connected current_maze, node
   already_connected
 end
 
+def add_nodes_to_node current_maze, node, max_nodes, avalable_nodes
+  connected = add_already_connected current_maze, node
+
+  remaining = max_nodes - connected.length
+
+  new_connections = make_branch remaining, avalable_nodes
+
+  final = connected + new_connections
+
+  final.uniq
+end
+
 
 
 # initilizes a new has with arrays as values, generates a bunch of nodes
@@ -135,7 +149,7 @@ def maze_maker number_of_nodes
   nodes = gen_first_path number_of_nodes
 
   nodes.each do |k, v|
-    return_maze[k] = make_branch(4, nodes)
+    return_maze[k] = add_nodes_to_node(return_maze, k, 4, nodes)
   end
 
   end_marker return_maze
@@ -151,5 +165,4 @@ end
 
 z = maze_maker 20
 
-puts z 
-puts add_already_connected z, z.keys[0]
+puts z
